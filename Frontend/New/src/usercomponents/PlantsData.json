@@ -1,0 +1,267 @@
+[
+    {
+        "id": 1,
+        "imgSrc": "tulsi.jpg",
+        "name": "Tulsi",
+        "usage": "Sacred plant known for its healing properties.",
+        "features": [
+            "Boosts immunity",
+            "Reduces stress",
+            "Treats respiratory disorders"
+        ]
+    },
+    {
+        "id": 2,
+        "imgSrc": "aloe_vera.jpg",
+        "name": "Aloe Vera",
+        "usage": "Succulent plant used in skincare and burns.",
+        "features": [
+            "Heals wounds",
+            "Moisturizes skin",
+            "Improves digestion"
+        ]
+    },
+    {
+        "id": 3,
+        "imgSrc": "neem.jpg",
+        "name": "Neem",
+        "usage": "Plant known for its antibacterial properties.",
+        "features": [
+            "Purifies blood",
+            "Promotes oral health",
+            "Treats skin conditions"
+        ]
+    },
+    {
+        "id": 4,
+        "imgSrc": "ashwagandha.jpg",
+        "name": "Ashwagandha",
+        "usage": "Used to reduce stress and improve stamina.",
+        "features": [
+            "Reduces anxiety",
+            "Boosts energy",
+            "Supports immune function"
+        ]
+    },
+    {
+        "id": 5,
+        "imgSrc": "ginger.jpg",
+        "name": "Ginger",
+        "usage": "Commonly used to aid digestion and reduce nausea.",
+        "features": [
+            "Aids digestion",
+            "Reduces nausea",
+            "Anti-inflammatory"
+        ]
+    },
+    {
+        "id": 6,
+        "imgSrc": "turmeric.jpg",
+        "name": "Turmeric",
+        "usage": "Known for its anti-inflammatory and antioxidant properties.",
+        "features": [
+            "Reduces inflammation",
+            "Boosts brain function",
+            "Antioxidant"
+        ]
+    },
+    {
+        "id": 7,
+        "imgSrc": "mint.jpg",
+        "name": "Mint",
+        "usage": "Used to freshen breath and aid digestion.",
+        "features": [
+            "Freshens breath",
+            "Aids digestion",
+            "Soothes headaches"
+        ]
+    },
+    {
+        "id": 8,
+        "imgSrc": "rosemary.jpg",
+        "name": "Rosemary",
+        "usage": "Known for enhancing memory and concentration.",
+        "features": [
+            "Enhances memory",
+            "Improves mood",
+            "Antioxidant properties"
+        ]
+    },
+    {
+        "id": 9,
+        "imgSrc": "lemongrass.jpg",
+        "name": "Lemongrass",
+        "usage": "Used to reduce fever and improve digestion.",
+        "features": [
+            "Reduces fever",
+            "Aids digestion",
+            "Relieves pain"
+        ]
+    },
+    {
+        "id": 10,
+        "imgSrc": "bottle_gourd.jpg",
+        "name": "Bottle Gourd",
+        "usage": "Used to treat constipation and improve digestion.",
+        "features": [
+            "Hydrates skin",
+            "Aids digestion",
+            "Reduces inflammation"
+        ]
+    },
+    {
+        "id": 11,
+        "imgSrc": "bitter_gourd.jpg",
+        "name": "Bitter Gourd",
+        "usage": "Used to manage diabetes and improve skin health.",
+        "features": [
+            "Lowers blood sugar",
+            "Detoxifies liver",
+            "Improves skin health"
+        ]
+    },
+    {
+        "id": 12,
+        "imgSrc": "pomegranate.jpg",
+        "name": "Pomegranate",
+        "usage": "Rich in antioxidants and used to improve heart health.",
+        "features": [
+            "Boosts heart health",
+            "Improves digestion",
+            "Rich in antioxidants"
+        ]
+    },
+    {
+        "id": 13,
+        "imgSrc": "black_pepper.jpg",
+        "name": "Black Pepper",
+        "usage": "Commonly used to enhance flavor and aid digestion.",
+        "features": [
+            "Aids digestion",
+            "Boosts metabolism",
+            "Anti-inflammatory"
+        ]
+    },
+    {
+        "id": 14,
+        "imgSrc": "cardamom.jpg",
+        "name": "Cardamom",
+        "usage": "Used to treat digestive issues and freshen breath.",
+        "features": [
+            "Improves digestion",
+            "Freshens breath",
+            "Anti-inflammatory"
+        ]
+    },
+    {
+        "id": 15,
+        "imgSrc": "cinnamon.jpg",
+        "name": "Cinnamon",
+        "usage": "Used to regulate blood sugar and improve heart health.",
+        "features": [
+            "Regulates blood sugar",
+            "Improves heart health",
+            "Anti-inflammatory"
+        ]
+    },
+    {
+        "id": 16,
+        "imgSrc": "coriander.jpg",
+        "name": "Coriander",
+        "usage": "Used to treat digestive issues and reduce inflammation.",
+        "features": [
+            "Improves digestion",
+            "Reduces inflammation",
+            "Detoxifies body"
+        ]
+    },
+    {
+        "id": 17,
+        "imgSrc": "fenugreek.jpg",
+        "name": "Fenugreek",
+        "usage": "Used to manage diabetes and improve lactation.",
+        "features": [
+            "Lowers blood sugar",
+            "Improves lactation",
+            "Rich in antioxidants"
+        ]
+    },
+    {
+        "id": 18,
+        "imgSrc": "gingko_biloba.jpg",
+        "name": "Gingko Biloba",
+        "usage": "Used to improve cognitive function and circulation.",
+        "features": [
+            "Improves memory",
+            "Boosts circulation",
+            "Antioxidant"
+        ]
+    },
+    {
+        "id": 19,
+        "imgSrc": "honey.jpg",
+        "name": "Honey",
+        "usage": "Natural sweetener with antibacterial properties.",
+        "features": [
+            "Boosts immunity",
+            "Heals wounds",
+            "Soothes sore throat"
+        ]
+    },
+    {
+        "id": 20,
+        "imgSrc": "jaggery.jpg",
+        "name": "Jaggery",
+        "usage": "Used to treat respiratory issues and improve digestion.",
+        "features": [
+            "Boosts immunity",
+            "Improves digestion",
+            "Rich in iron"
+        ]
+    },
+    {
+        "id": 21,
+        "imgSrc": "karela.jpg",
+        "name": "Karela",
+        "usage": "Used to manage diabetes and improve skin health.",
+        "features": [
+            "Lowers blood sugar",
+            "Detoxifies liver",
+            "Improves skin health"
+        ]
+    },
+    {
+        "id": 22,
+        "imgSrc": "kokum.jpg",
+        "name": "Kokum",
+        "usage": "Used to treat acidity and improve digestion.",
+        "features": [
+            "Reduces acidity",
+            "Improves digestion",
+            "Rich in antioxidants"
+        ]
+    },
+    {
+        "id": 23,
+        "imgSrc": "licorice.jpg",
+        "name": "Licorice",
+        "usage": "Used to soothe sore throats and improve digestion.",
+        "features": [
+            "Soothes sore throat",
+            "Improves digestion",
+            "Anti-inflammatory"
+        ]
+    },
+    {
+        "id": 24,
+        "imgSrc": "mango.jpg",
+        "name": "Mango",
+        "usage": "Rich in vitamins and used to improve digestion.",
+        "features": [
+            "Boosts immunity",
+            "Improves digestion",
+            "Rich in vitamins"
+        ]
+    }
+    
+]

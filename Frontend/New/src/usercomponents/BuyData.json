@@ -1,0 +1,162 @@
+[
+    {
+        "id": 1,
+        "imgSrc": "tulsi.jpg",
+        "name": "Tulsi",
+        "usage": "Sacred plant known for its healing properties.",
+        "features": [
+            "Boosts immunity",
+            "Reduces stress",
+            "Treats respiratory disorders"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734654287/Potted_Green_Majesty_1220000231_texture_1_nrxsgw.glb",
+        "title": "Tulsi 3D Model",
+        "description": "Explore the 3D model of the Tulsi plant, known for its healing properties.",
+        "alt": "A 3D model of a Tulsi plant",
+        "price": 15.99,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-tulsi",
+            "availability": "In Stock"
+        }
+    },
+    {
+        "id": 2,
+        "imgSrc": "aloe_vera.jpg",
+        "name": "Aloe Vera",
+        "usage": "Succulent plant used in skincare and burns.",
+        "features": [
+            "Heals wounds",
+            "Moisturizes skin",
+            "Improves digestion"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734655433/Aloe_Serenity_1220004329_texture_x8wsoa.glb",
+        "title": "Aloe Vera 3D Model",
+        "description": "Explore the 3D model of the Aloe Vera plant, known for its skincare properties.",
+        "alt": "A 3D model of an Aloe Vera plant",
+        "price": 18.49,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-aloe-vera",
+            "availability": "In Stock"
+        }
+    },
+    {
+        "id": 3,
+        "imgSrc": "ashwagandha.jpg",
+        "name": "Ashwagandha",
+        "usage": "Used to reduce stress and improve stamina.",
+        "features": [
+            "Reduces anxiety",
+            "Boosts energy",
+            "Supports immune function"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734655895/Green_Growth_1220005059_texture_zcqxls.glb",
+        "title": "Ashwagandha 3D Model",
+        "description": "Explore the 3D model of the Ashwagandha plant, known for its stress-reducing properties.",
+        "alt": "A 3D model of an Ashwagandha plant",
+        "price": 20.00,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-ashwagandha",
+            "availability": "Limited Stock"
+        }
+    },
+    {
+        "id": 4,
+        "imgSrc": "ginger.jpg",
+        "name": "Ginger",
+        "usage": "Commonly used to aid digestion and reduce nausea.",
+        "features": [
+            "Aids digestion",
+            "Reduces nausea",
+            "Anti-inflammatory"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734656955/Potted_Bromeliad_1220010136_texture_1_m7mbbr.glb",
+        "title": "Ginger 3D Model",
+        "description": "Explore the 3D model of the Ginger plant, known for its digestive properties.",
+        "alt": "A 3D model of a Ginger plant",
+        "price": 12.99,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-ginger",
+            "availability": "In Stock"
+        }
+    },
+    {
+        "id": 5,
+        "imgSrc": "turmeric.jpg",
+        "name": "Turmeric",
+        "usage": "Known for its anti-inflammatory and antioxidant properties.",
+        "features": [
+            "Reduces inflammation",
+            "Boosts brain function",
+            "Antioxidant"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734925047/vbrzc941pcoktpzjjkhm.glb",
+        "title": "Turmeric 3D Model",
+        "description": "Explore the 3D model of the Turmeric plant, known for its anti-inflammatory properties.",
+        "alt": "A 3D model of a Turmeric plant",
+        "price": 14.59,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-turmeric",
+            "availability": "In Stock"
+        }
+    },
+    {
+        "id": 6,
+        "imgSrc": "mint.jpg",
+        "name": "Mint",
+        "usage": "Used to freshen breath and aid digestion.",
+        "features": [
+            "Freshens breath",
+            "Aids digestion",
+            "Soothes headaches"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734925244/model_3_k0w4sx.glb",
+        "title": "Mint 3D Model",
+        "description": "Explore the 3D model of the Mint plant, known for its refreshing properties.",
+        "alt": "A 3D model of a Mint plant",
+        "price": 10.00,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-mint",
+            "availability": "In Stock"
+        }
+    },
+    {
+        "id": 7,
+        "imgSrc": "rosemary.jpg",
+        "name": "Rosemary",
+        "usage": "Known for enhancing memory and concentration.",
+        "features": [
+            "Enhances memory",
+            "Improves mood",
+            "Antioxidant properties"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734925292/model_4_e5do4w.glb",
+        "title": "Rosemary 3D Model",
+        "description": "Explore the 3D model of the Rosemary plant, known for its memory-enhancing properties.",
+        "alt": "A 3D model of a Rosemary plant",
+        "price": 16.25,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-rosemary",
+            "availability": "Out of Stock"
+        }
+    },
+    {
+        "id": 8,
+        "imgSrc": "lemongrass.jpg",
+        "name": "Lemongrass",
+        "usage": "Used to reduce fever and improve digestion.",
+        "features": [
+            "Reduces fever",
+            "Aids digestion",
+            "Relieves pain"
+        ],
+        "modelUrl": "https://res.cloudinary.com/dk3rrgmig/image/upload/v1734925381/model_5_afgmrx.glb",
+        "title": "Lemongrass 3D Model",
+        "description": "Explore the 3D model of the Lemongrass plant, known for its fever-reducing properties.",
+        "alt": "A 3D model of a Lemongrass plant",
+        "price": 15.50,
+        "purchase": {
+            "buyNowUrl": "https://example.com/buy-lemongrass",
+            "availability": "In Stock"
+        }
+    }
+]
