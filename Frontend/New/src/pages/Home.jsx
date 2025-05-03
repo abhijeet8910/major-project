@@ -9,7 +9,7 @@ const Home = () => {
       {/* Header Section */}
       <header className="text-center py-16 bg-gradient-to-r from-green-600 to-green-500 text-white shadow-md">
         <h1 className="text-6xl font-extrabold mb-4 drop-shadow-lg">
-          Herbal Garden
+          HerbalConnect
         </h1>
         <p className="text-xl font-medium max-w-3xl mx-auto">
           Connecting you to trusted nursery farms for fresh plants, herbs, and gardening solutions. Let's grow together!
@@ -50,7 +50,7 @@ const Home = () => {
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="py-16 bg-gradient-to-r from-green-400 to-green-300 text-center">
+      <section className="py-16 bg-gradient-to-r from-lime-400 to-green-300 text-center">
         <h2 className="text-4xl font-bold text-green-900 mb-6">
           Ready to Start Your Gardening Journey?
         </h2>

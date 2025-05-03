@@ -1,103 +1,154 @@
 const Order = require("../models/Order.model");
-const Cart = require("../models/Cart.model");
+const Product = require("../models/Product.model");
 const AsyncHandler = require("../middlewares/asynchandler");
+const Razorpay = require("../utils/razorpay"); // NEW
 
-// Place a new order
-const PlaceOrder = AsyncHandler(async (req, res) => {
-    const userId = req.user._id;
-    const { shippingAddress } = req.body;
+const createRazorpayOrder = AsyncHandler(async (req, res) => {
+  const { amount } = req.body;
 
-    // Get the user's cart
-    const cart = await Cart.findOne({ user: userId }).populate("items.product");
+  if (!amount || typeof amount !== "number") {
+    return res.status(400).json({ success: false, message: "Invalid amount" });
+  }
 
-    if (!cart || cart.items.length === 0) {
-        return res.status(400).json({ success: false, message: "Cart is empty" });
+  try {
+    const options = {
+      amount: amount * 100, // in paise
+      currency: "INR",
+      receipt: `receipt_order_${Date.now()}`,
+    };
+
+    const order = await Razorpay.orders.create(options);
+    res.status(200).json({ success: true, order });
+  } catch (err) {
+    console.error("💥 Razorpay error:", err); // Log error in backend
+    res.status(500).json({ success: false, message: "Failed to create Razorpay order", error: err.message });
+  }
+});
+
+
+// ✅ Place a new order
+const placeOrder = AsyncHandler(async (req, res) => {
+  const { items, shippingAddress, seller, paymentMethod } = req.body;
+
+  if (!items || items.length === 0) {
+    return res.status(400).json({ success: false, message: "No items to order" });
+  }
+
+  let totalAmount = 0;
+  const orderItems = [];
+
+  for (let item of items) {
+    const product = await Product.findById(item.product);
+    if (!product) {
+      return res.status(404).json({ success: false, message: `Product not found: ${item.product}` });
     }
 
-    // Calculate total price
-    const totalPrice = cart.items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
+    if (product.stock < item.quantity) {
+      return res.status(400).json({ success: false, message: `Insufficient stock for: ${product.name}` });
+    }
 
-    // Create a new order
-    const order = new Order({
-        user: userId,
-        items: cart.items.map(item => ({
-            product: item.product._id,
-            quantity: item.quantity,
-            price: item.product.price
-        })),
-        totalPrice,
-        shippingAddress
+    product.stock -= item.quantity;
+    await product.save();
+
+    orderItems.push({
+      product: product._id,
+      quantity: item.quantity,
+      price: product.price,
     });
 
-    await order.save();
+    totalAmount += product.price * item.quantity;
+  }
 
-    // Clear the user's cart after placing order
-    cart.items = [];
-    await cart.save();
+  const order = new Order({
+    user: req.user._id,
+    seller,
+    items: orderItems,
+    shippingAddress,
+    totalAmount,
+    paymentStatus: paymentMethod === "Online" ? "Paid" : "Pending", // NEW
+  });
 
-    res.status(201).json({ success: true, message: "Order placed successfully", order });
+  await order.save();
+  res.status(201).json({ success: true, message: "Order placed successfully", order });
 });
 
-// Get all orders for a user
-const GetUserOrders = AsyncHandler(async (req, res) => {
-    const userId = req.user._id;
-    const orders = await Order.find({ user: userId }).populate("items.product");
-
-    res.status(200).json({ success: true, orders });
+// ✅ Get all orders of the logged-in user
+const getUserOrders = AsyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id }).populate("items.product");
+  res.status(200).json({ success: true, orders });
 });
 
-// Get details of a specific order
-const GetOrderById = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const order = await Order.findById(id).populate("items.product");
+// ✅ Get all orders for a seller
+const getSellerOrders = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
 
-    if (!order) {
-        return res.status(404).json({ success: false, message: "Order not found" });
-    }
+    // Find all orders that include products from this seller
+    const orders = await Order.find({
+      'items.seller': sellerId,
+    })
+      .populate('user', 'name email address') // populate user info
+      .populate('items.product', 'name price'); // populate product info
 
-    res.status(200).json({ success: true, order });
+    res.json({ orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error: Could not fetch orders' });
+  }
+};
+
+// ✅ Get single order by ID
+const getOrderById = AsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const order = await Order.findById(id).populate("items.product user seller");
+
+  if (!order) {
+    return res.status(404).json({ success: false, message: "Order not found" });
+  }
+
+  res.status(200).json({ success: true, order });
 });
 
-// Update order status (For Admin or Seller)
-const UpdateOrderStatus = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { orderStatus } = req.body;
+// ✅ Update order status (for seller or admin)
+const updateOrderStatus = AsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
 
-    const order = await Order.findById(id);
-    if (!order) {
-        return res.status(404).json({ success: false, message: "Order not found" });
-    }
+  const order = await Order.findById(id);
+  if (!order) {
+    return res.status(404).json({ success: false, message: "Order not found" });
+  }
 
-    // Update order status
-    order.orderStatus = orderStatus;
-    await order.save();
+  if (order.seller.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ success: false, message: "Unauthorized" });
+  }
 
-    res.status(200).json({ success: true, message: "Order status updated", order });
+  order.status = status;
+  await order.save();
+
+  res.status(200).json({ success: true, message: "Order status updated", order });
+});
+const cancelOrder = AsyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ success: false, message: "Order not found" });
+  }
+
+  if (order.user.toString() !== req.user._id.toString()) {
+    return res.status(403).json({ success: false, message: "Unauthorized" });
+  }
+
+  await order.deleteOne();
+  res.status(200).json({ success: true, message: "Order cancelled" });
 });
 
-// Cancel an order
-const CancelOrder = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const order = await Order.findById(id);
-
-    if (!order) {
-        return res.status(404).json({ success: false, message: "Order not found" });
-    }
-
-    // Ensure the user owns the order before canceling
-    if (order.user.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ success: false, message: "Unauthorized: You can only cancel your own orders" });
-    }
-
-    // Allow cancellation only if the order is still in "Processing" status
-    if (order.orderStatus !== "Processing") {
-        return res.status(400).json({ success: false, message: "Order cannot be canceled at this stage" });
-    }
-
-    order.orderStatus = "Cancelled";
-    await order.save();
-
-    res.status(200).json({ success: true, message: "Order canceled successfully", order });
-});
-
-module.exports = { PlaceOrder, GetUserOrders, GetOrderById, UpdateOrderStatus, CancelOrder };
+module.exports = {
+  placeOrder,
+  createRazorpayOrder, // NEW
+  getUserOrders,
+  getSellerOrders,
+  getOrderById,
+  updateOrderStatus,
+  cancelOrder
+};

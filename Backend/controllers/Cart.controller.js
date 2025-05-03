@@ -1,117 +1,101 @@
 const Cart = require("../models/Cart.model");
 const Product = require("../models/Product.model");
 const AsyncHandler = require("../middlewares/asynchandler");
+const addToCart = AsyncHandler(async (req, res) => {
+  console.log("🛒 Add to cart request body:", req.body); // log here
 
-//  Add Product to Cart (Only Users)
-const AddToCart = AsyncHandler(async (req, res) => {
-    const { productId } = req.body;
-    const userId = req.user._id;
+  const { productId, quantity } = req.body;
+  if (!productId || !quantity) {
+    return res.status(400).json({ success: false, message: "Product ID and quantity are required" });
+  }
 
-    if (req.user.role !== "user") {
-        return res.status(403).json({ success: false, message: "Unauthorized: Only users can add products to cart" });
-    }
+  let cart = await Cart.findOne({ user: req.user._id });
+  if (!cart) {
+    cart = new Cart({ user: req.user._id, items: [] });
+  }
 
-    const product = await Product.findById(productId);
-    if (!product) {
-        return res.status(404).json({ success: false, message: "Product not found" });
-    }
+  const existingItem = cart.items.find(
+    (item) => item.product.toString() === productId
+  );
 
-    if (product.stock <= 0) {
-        return res.status(400).json({ success: false, message: "Product is out of stock" });
-    }
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.items.push({ product: productId, quantity });
+  }
 
-    let cart = await Cart.findOne({ user: userId });
-
-    if (!cart) {
-        cart = new Cart({ user: userId, items: [{ product: productId, quantity: 1 }] });
-    } else {
-        const existingItem = cart.items.find(item => item.product.toString() === productId);
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.items.push({ product: productId, quantity: 1 });
-        }
-    }
-
-    await cart.save();
-    res.status(200).json({ success: true, message: "Product added to cart", cart });
+  await cart.save();
+  res.status(200).json({ success: true, message: "Item added to cart", cart });
 });
 
-//  Get User's Cart
-const GetCart = AsyncHandler(async (req, res) => {
-    const userId = req.user._id;
+// ✅ Remove item from cart
+const removeFromCart = AsyncHandler(async (req, res) => {
+  const { productId } = req.params;
 
-    if (req.user.role !== "user") {
-        return res.status(403).json({ success: false, message: "Unauthorized: Only users can view cart" });
-    }
+  const cart = await Cart.findOne({ user: req.user._id });
+  if (!cart) {
+    return res.status(404).json({ success: false, message: "Cart not found" });
+  }
 
-    const cart = await Cart.findOne({ user: userId }).populate("items.product");
-    if (!cart) return res.status(404).json({ success: false, message: "Cart is empty" });
+  cart.items = cart.items.filter((item) => item.product.toString() !== productId);
+  await cart.save();
 
-    res.status(200).json({ success: true, cart });
+  res.status(200).json({ success: true, message: "Item removed from cart", cart });
 });
 
-//  Remove a Product from Cart
-const RemoveFromCart = AsyncHandler(async (req, res) => {
-    const { productId } = req.params;
-    const userId = req.user._id;
-
-    if (req.user.role !== "user") {
-        return res.status(403).json({ success: false, message: "Unauthorized: Only users can remove products from cart" });
-    }
-
-    let cart = await Cart.findOne({ user: userId });
-    if (!cart) return res.status(404).json({ success: false, message: "Cart not found" });
-
-    cart.items = cart.items.filter(item => item.product.toString() !== productId);
-
-    await cart.save();
-    res.status(200).json({ success: true, message: "Product removed from cart", cart });
+// ✅ Get cart for logged-in user
+const getCart = AsyncHandler(async (req, res) => {
+  const cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
+  if (!cart) {
+    return res.status(200).json({ success: true, cart: { items: [] } });
+  }
+  res.status(200).json({ success: true, cart });
 });
 
-//  Decrease Product Quantity or Remove from Cart
-const DecreaseQuantity = AsyncHandler(async (req, res) => {
-    const { productId } = req.params;
-    const userId = req.user._id;
-
-    if (req.user.role !== "user") {
-        return res.status(403).json({ success: false, message: "Unauthorized: Only users can modify cart" });
-    }
-
-    let cart = await Cart.findOne({ user: userId });
-    if (!cart) return res.status(404).json({ success: false, message: "Cart not found" });
-
-    const existingItem = cart.items.find(item => item.product.toString() === productId);
-
-    if (!existingItem) {
-        return res.status(404).json({ success: false, message: "Product not found in cart" });
-    }
-
-    if (existingItem.quantity > 1) {
-        existingItem.quantity -= 1;
-    } else {
-        cart.items = cart.items.filter(item => item.product.toString() !== productId);
-    }
-
-    await cart.save();
-    res.status(200).json({ success: true, message: "Product quantity updated", cart });
-});
-
-//  Clear Entire Cart
-const ClearCart = AsyncHandler(async (req, res) => {
-    const userId = req.user._id;
-
-    if (req.user.role !== "user") {
-        return res.status(403).json({ success: false, message: "Unauthorized: Only users can clear cart" });
-    }
-
-    const cart = await Cart.findOne({ user: userId });
-    if (!cart) return res.status(404).json({ success: false, message: "Cart not found" });
-
+// ✅ Clear cart
+const clearCart = AsyncHandler(async (req, res) => {
+  const cart = await Cart.findOne({ user: req.user._id });
+  if (cart) {
     cart.items = [];
     await cart.save();
+  }
+  res.status(200).json({ success: true, message: "Cart cleared" });
+});
+// ✅ Update quantity (increase or decrease)
+const updateCartQuantity = AsyncHandler(async (req, res) => {
+  const { productId, action } = req.body; // action = 'increase' | 'decrease'
 
-    res.status(200).json({ success: true, message: "Cart cleared successfully", cart });
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({ success: false, message: "Cart not found" });
+  }
+
+  const item = cart.items.find((item) => item.product.toString() === productId);
+
+  if (!item) {
+    return res.status(404).json({ success: false, message: "Product not found in cart" });
+  }
+
+  if (action === "increase") {
+    item.quantity += 1;
+  } else if (action === "decrease") {
+    item.quantity -= 1;
+    if (item.quantity < 1) {
+      // Optional: remove item if quantity < 1
+      cart.items = cart.items.filter((i) => i.product.toString() !== productId);
+    }
+  }
+
+  await cart.save();
+  res.status(200).json({ success: true, message: "Cart updated", cart });
 });
 
-module.exports = { AddToCart, GetCart, RemoveFromCart, DecreaseQuantity, ClearCart };
+
+module.exports = {
+  addToCart,
+  removeFromCart,
+  getCart,
+  clearCart,
+  updateCartQuantity
+};

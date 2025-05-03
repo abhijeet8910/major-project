@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { RegisterUser, LoginUser, GetDetails } = require('../controllers/User.controller');
+const { RegisterUser, LoginUser, GetDetails, UpdateProfile } = require('../controllers/User.controller');
 const { ValidateRegister, ValidateLogin } = require('../middlewares/expressvalidator');
 const { VerifyToken } = require('../utils/jwt');
 
@@ -23,5 +23,7 @@ router.post('/login', ValidateLogin, LoginUser);
 // @desc    Get user details by ID
 // @access  Private
 router.get('/profile/:id',VerifyToken, GetDetails); 
+
+router.put('/profile/update/:id', VerifyToken, UpdateProfile);
 
 module.exports = router;

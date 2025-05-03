@@ -1,45 +1,41 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaSearch, FaShoppingCart, FaUser } from 'react-icons/fa';
+import { FaHome, FaSearch, FaCube, FaUser } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-green-700 text-white p-4 fixed bottom-0 w-full z-50 shadow-lg">
-      <div className="flex justify-around items-center space-x-8">
-        {/* Link to Home Section */}
-        <Link 
-          to="/userhomepage" 
-          className="text-center flex flex-col items-center hover:text-green-400"
+    <footer className="bg-green-700 text-white fixed bottom-0 w-full z-50 shadow-md h-20">
+      <div className="flex justify-around items-center h-full px-4">
+        <Link
+          to="/userhomepage"
+          className="text-center flex flex-col items-center hover:text-green-300 transition"
         >
-          <FaHome size={24} />
-          <span className="text-sm">Home</span>
+          <FaHome size={22} />
+          <span className="text-xs mt-1">Home</span>
         </Link>
 
-        {/* Link to Search Section */}
-        <Link 
-          to="/userhomepage/search" 
-          className="text-center flex flex-col items-center hover:text-green-400"
+        <Link
+          to="/userhomepage/search"
+          className="text-center flex flex-col items-center hover:text-green-300 transition"
         >
-          <FaSearch size={24} />
-          <span className="text-sm">Search</span>
+          <FaSearch size={22} />
+          <span className="text-xs mt-1">Explore</span>
         </Link>
 
-        {/* Link to Buy Section */}
-        <Link 
-          to="/userhomepage/buy" 
-          className="text-center flex flex-col items-center hover:text-green-400"
+        <Link
+          to="/userhomepage/buy"
+          className="text-center flex flex-col items-center hover:text-green-300 transition"
         >
-          <FaShoppingCart size={24} />
-          <span className="text-sm">Buy</span>
+          <FaCube size={22} />
+          <span className="text-xs mt-1 text-center">3D & AR</span>
         </Link>
 
-        {/* Link to User Section */}
-        <Link 
-          to="/userhomepage/user" 
-          className="text-center flex flex-col items-center hover:text-green-400"
+        <Link
+          to="/userhomepage/user"
+          className="text-center flex flex-col items-center hover:text-green-300 transition"
         >
-          <FaUser size={24} />
-          <span className="text-sm">User</span>
+          <FaUser size={22} />
+          <span className="text-xs mt-1">User</span>
         </Link>
       </div>
     </footer>

@@ -18,6 +18,8 @@ const ProductSchema = new mongoose.Schema(
     },
     category: {
       type: String,
+      enum: ["Seed", "Indoor Plant", "Medicinal Plants", "Flower", "Outdoor Plant"],
+
       required: true
     },
     stock: {

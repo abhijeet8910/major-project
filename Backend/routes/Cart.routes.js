@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { VerifyToken } = require("../utils/jwt");
 const {
-    AddToCart,
-    GetCart,
-    RemoveFromCart,
-    DecreaseQuantity,
-    ClearCart
+  addToCart,
+  removeFromCart,
+  getCart,
+  clearCart,
+  updateCartQuantity
 } = require("../controllers/Cart.controller");
 
 // @route   GET /api/cart/test
@@ -15,28 +15,28 @@ const {
 router.get("/test", (req, res) => res.send("Cart routes are working"));
 
 // @route   POST /api/cart/add
-// @desc    Add a product to the cart (Only for Users)
-// @access  Private (User only)
-router.post("/add", VerifyToken, AddToCart);
-
-// @route   GET /api/cart
-// @desc    Get the user's cart
-// @access  Private (User only)
-router.get("/", VerifyToken, GetCart);
-
-// @route   PUT /api/cart/decrease/:productId
-// @desc    Decrease the quantity of a product in the cart
-// @access  Private (User only)
-router.put("/decrease/:productId", VerifyToken, DecreaseQuantity);
+// @desc    Add item to cart
+// @access  Private
+router.post("/add", VerifyToken, addToCart);
 
 // @route   DELETE /api/cart/remove/:productId
-// @desc    Remove a product from the cart
-// @access  Private (User only)
-router.delete("/remove/:productId", VerifyToken, RemoveFromCart);
+// @desc    Remove item from cart
+// @access  Private
+router.delete("/remove/:productId", VerifyToken, removeFromCart);
+
+// @route   GET /api/cart/
+// @desc    Get logged-in user's cart
+// @access  Private
+router.get("/", VerifyToken, getCart);
 
 // @route   DELETE /api/cart/clear
-// @desc    Clear the entire cart
-// @access  Private (User only)
-router.delete("/clear", VerifyToken, ClearCart);
+// @desc    Clear user's cart
+// @access  Private
+router.delete("/clear", VerifyToken, clearCart);
+// @route   PUT /api/cart/update
+// @desc    Update quantity (increase/decrease)
+// @access  Private
+router.put("/update", VerifyToken, updateCartQuantity);
+
 
 module.exports = router;

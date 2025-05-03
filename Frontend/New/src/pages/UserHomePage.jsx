@@ -1,21 +1,26 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import SearchSection from '../usersection/SearchSection'; 
+ 
 import BuySection from '../usersection/BuySection'; 
-import UserSection from '../usersection/UserSection'; 
+ 
 import Footer from '../usercomponents/Footer'; 
 import Apihomepage from '../usersection/Apihomepage';
+import UserDashboard from '../Dashboards/UserDashboard';
+import ExploreSection from '../usersection/ExploreSection';
+import UserOrders from '../Dashboards/UserDashboards.jsx/UserOrders';
+
 const UserHomePage = () => {
   return (
-    <div>
+    <div className='min-h-screen relative pb-20'>
       
 
     
       <Routes>
         <Route path="/" element={<Apihomepage/>} />
-        <Route path="search" element={<SearchSection />} />
+        <Route path="search" element={<ExploreSection />} />
         <Route path="buy" element={<BuySection />} />
-        <Route path="user" element={<UserSection />} />
+        <Route path="user" element={<UserDashboard/>} />
+        <Route path= "orders" element = {<UserOrders/>}/>
       </Routes>
 
       <Footer />

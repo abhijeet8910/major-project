@@ -47,18 +47,15 @@ const LoginSeller = AsyncHandler(async (req, res) => {
         email: isEmail.email
     });
 });
-
-// Function to get seller details by ID
+// ✅ Get Seller Details using token
 const GetSellerDetails = AsyncHandler(async (req, res) => {
-    const { id } = req.params;
-
-    const seller = await Seller.findById(id);
+    const seller = await Seller.findById(req.user._id);
 
     if (!seller) {
         return res.status(404).json({ success: false, message: "Seller not found" });
     }
 
-    res.status(200).json({ success: true, message: "Seller found", seller });
+    res.status(200).json({ success: true, seller });
 });
 
 // Get All Orders for a Seller
@@ -79,16 +76,32 @@ const GetSellerOrders = AsyncHandler(async (req, res) => {
     res.status(200).json({ success: true, message: "Seller orders retrieved", orders });
 });
 
-// Update Order Status (Processing → Shipped → Delivered)
+// // Update Order Status (Processing → Shipped → Delivered)
+// const UpdateOrderStatus = AsyncHandler(async (req, res) => {
+//     const { orderId } = req.params;
+//     const { status } = req.body; // Expected: "Processing", "Shipped", "Delivered"
+
+//     // Allowed status updates
+//     const validStatus = ["Processing", "Shipped", "Delivered"];
+//     if (!validStatus.includes(status)) {
+//         return res.status(400).json({ success: false, message: "Invalid status update" });
+//     }
+
+//     const order = await Order.findById(orderId);
+
+//     if (!order) {
+//         return res.status(404).json({ success: false, message: "Order not found" });
+//     }
+
+//     // Update status
+//     order.status = status;
+//     await order.save();
+
+//     res.status(200).json({ success: true, message: `Order updated to ${status}`, order });
+// });
+// ✅ Automatically update to next order status
 const UpdateOrderStatus = AsyncHandler(async (req, res) => {
     const { orderId } = req.params;
-    const { status } = req.body; // Expected: "Processing", "Shipped", "Delivered"
-
-    // Allowed status updates
-    const validStatus = ["Processing", "Shipped", "Delivered"];
-    if (!validStatus.includes(status)) {
-        return res.status(400).json({ success: false, message: "Invalid status update" });
-    }
 
     const order = await Order.findById(orderId);
 
@@ -96,12 +109,19 @@ const UpdateOrderStatus = AsyncHandler(async (req, res) => {
         return res.status(404).json({ success: false, message: "Order not found" });
     }
 
-    // Update status
-    order.status = status;
+    const nextStatus = {
+        "Processing": "Shipped",
+        "Shipped": "Delivered",
+        "Delivered": "Delivered"
+    };
+
+    const currentStatus = order.status;
+    order.status = nextStatus[currentStatus] || "Processing";
     await order.save();
 
-    res.status(200).json({ success: true, message: `Order updated to ${status}`, order });
+    res.status(200).json({ success: true, message: `Order status updated to ${order.status}`, order });
 });
+
 
 module.exports = {
     RegisterSeller,

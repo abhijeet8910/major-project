@@ -15,9 +15,7 @@ const DetailedPlants = ({ plant, onBack }) => {
   };
 
   const renderDropdown = (title, content) => {
-    if (!content || (Array.isArray(content) && content.length === 0)) {
-      return null;
-    }
+    if (!content || (Array.isArray(content) && content.length === 0)) return null;
 
     return (
       <div className="mb-4">
@@ -33,9 +31,7 @@ const DetailedPlants = ({ plant, onBack }) => {
             {Array.isArray(content) ? (
               <ul className="list-disc list-inside">
                 {content.map((item, index) => (
-                  <li key={index} className="text-gray-700">
-                    {item}
-                  </li>
+                  <li key={index} className="text-gray-700">{item}</li>
                 ))}
               </ul>
             ) : typeof content === 'object' ? (
@@ -82,6 +78,13 @@ const DetailedPlants = ({ plant, onBack }) => {
     );
   }
 
+  // Determine best image source
+  const imageUrl =
+    plant.default_image?.original_url ||
+    plantDetails?.default_image?.original_url ||
+    plant.default_image?.medium_url ||
+    'https://via.placeholder.com/400?text=Image+Not+Available';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-blue-100 to-purple-200 p-6">
       {/* Back Button */}
@@ -102,9 +105,14 @@ const DetailedPlants = ({ plant, onBack }) => {
         {/* Image and Basic Details */}
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <img
-            src={plant.default_image?.original_url || 'https://via.placeholder.com/400'}
+            src={imageUrl}
             alt={plant.common_name || 'Plant Image'}
-            className="rounded-lg shadow-lg w-full lg:w-1/3 object-cover"
+            className="rounded-lg shadow-lg w-full lg:w-1/3 object-contain"
+            loading="lazy"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/400?text=Unavailable';
+            }}
           />
           <div className="w-full lg:w-2/3">
             <h2 className="text-2xl font-semibold text-green-800 mb-4">
@@ -119,7 +127,7 @@ const DetailedPlants = ({ plant, onBack }) => {
           </div>
         </div>
 
-        {/* Additional Details from the API Response */}
+        {/* Additional Details */}
         <div className="mt-6">
           {renderDropdown('Description', plantDetails.description)}
           {renderDropdown('Type', plantDetails.type)}

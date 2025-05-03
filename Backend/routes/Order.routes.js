@@ -1,37 +1,36 @@
 const express = require("express");
 const router = express.Router();
-const { VerifyToken } = require("../utils/jwt");
+const { VerifyToken, IsSeller } = require("../utils/jwt");
 const {
-    PlaceOrder,
-    GetUserOrders,
-    GetOrderById,
-    UpdateOrderStatus,
-    CancelOrder
+  placeOrder,
+  createRazorpayOrder, // NEW
+  getUserOrders,
+  getSellerOrders,
+  getOrderById,
+  updateOrderStatus,
+  cancelOrder
 } = require("../controllers/Order.controller");
 
-// @route   POST /api/orders/place
-// @desc    Place a new order
-// @access  Private (User only)
-router.post("/place", VerifyToken, PlaceOrder);
+// @route   GET /api/orders/test
+router.get("/test", (req, res) => res.send("Order routes are working"));
 
-// @route   GET /api/orders
-// @desc    Get all orders for a user
-// @access  Private (User only)
-router.get("/", VerifyToken, GetUserOrders);
+// @route   POST /api/orders/place
+router.post("/place", VerifyToken, placeOrder);
+
+// @route   POST /api/orders/create-payment
+router.post("/create-payment", VerifyToken, createRazorpayOrder); // NEW
+
+// @route   GET /api/orders/user
+router.get("/user", VerifyToken, getUserOrders);
+
+// @route   GET /api/orders/seller
+router.get("/seller", VerifyToken, IsSeller, getSellerOrders);
 
 // @route   GET /api/orders/:id
-// @desc    Get order details by ID
-// @access  Private (User only)
-router.get("/:id", VerifyToken, GetOrderById);
+router.get("/:id", VerifyToken, getOrderById);
 
-// @route   PUT /api/orders/:id/update
-// @desc    Update order status (Admin/Seller only)
-// @access  Private (Admin/Seller)
-router.put("/:id/update", VerifyToken, UpdateOrderStatus);
-
-// @route   DELETE /api/orders/:id/cancel
-// @desc    Cancel an order (Only if in processing state)
-// @access  Private (User only)
-router.delete("/:id/cancel", VerifyToken, CancelOrder);
+// @route   PUT /api/orders/status/:id
+router.put("/status/:id", VerifyToken, IsSeller, updateOrderStatus);
+router.delete("/cancel/:id", VerifyToken, cancelOrder);
 
 module.exports = router;

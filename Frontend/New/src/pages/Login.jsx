@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ErrorMessage from '../components/ErrorMessage';
 
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,19 +14,16 @@ const Login = () => {
     try {
       const response = await axios.post('http://localhost:4008/api/user/login', { email, password });
 
-      // Destructure response data
-      const { token, user, id, email: userEmail } = response.data;
-
-      // Store token and user details in localStorage
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('user', JSON.stringify({ user, id, email: userEmail }));
+      const { token, user } = response.data;
+localStorage.setItem('authToken', token);
+localStorage.setItem('user', JSON.stringify(user));
 
       // Navigate to the user homepage
       navigate('/userhomepage');
       
     } catch (error) {
       if (error.response && error.response.data.errors) {
-        // Handle express-validator errors
+        // Handle express-validator errors (validation errors)
         setErrors(error.response.data.errors);
       } else if (error.response && error.response.data.message) {
         // Handle other server-side errors

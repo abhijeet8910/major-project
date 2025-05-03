@@ -1,26 +1,31 @@
+// models/Cart.js
 const mongoose = require("mongoose");
 
-const CartSchema = new mongoose.Schema({
+const CartItemSchema = new mongoose.Schema({
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: [1, "Quantity can not be less than 1"],
+    default: 1
+  }
+});
+
+const CartSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true // Each user has only one cart
     },
-    items: [
-        {
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Product",
-                required: true
-            },
-            quantity: {
-                type: Number,
-                required: true,
-                min: 1,
-                default: 1
-            }
-        }
-    ]
-}, { timestamps: true });
+    items: [CartItemSchema]
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Cart", CartSchema);

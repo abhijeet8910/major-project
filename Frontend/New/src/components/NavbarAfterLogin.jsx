@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const NavbarAfterLogin = () => {
@@ -8,15 +8,14 @@ const NavbarAfterLogin = () => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-      setUserName(user.user); // Assuming 'user' object has a 'user' property for username
+      setUserName(user.name); // ✅ fix: only use the name
     }
   }, []);
 
   const handleLogout = () => {
-    // Clear user data from localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
-    navigate('/login'); // Redirect to login after logout
+    navigate('/login');
   };
 
   return (
@@ -24,7 +23,7 @@ const NavbarAfterLogin = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div>
           <Link to="/" className="text-2xl font-bold text-green-100 hover:text-white">
-            Herbal Garden 🌱
+            HerbalConnect 🌱
           </Link>
         </div>
 
